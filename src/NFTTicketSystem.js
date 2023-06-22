@@ -4,10 +4,13 @@ import './App.css';
 
 function NFTVerification() {
   const [walletAddress, setWalletAddress] = useState('');
-  const contract = '0x43111161dc2eb245a0f51bb79310c1e80d0129b4'
   const [blockchain, setBlockchain] = useState('eth-main');
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+
+  const contract = '0xce4f341622340d56e397740d325fd357e62b91cb'
+  const expirationDate = '2024-01-01T01:00:00.000Z'
+  const currentDate = new Date()
 
   const verifyTicket = async () => {
     const url = `http://localhost:8080/v1/nfts/owner/${walletAddress}?chain=${blockchain}&page_size=25`;
@@ -71,9 +74,6 @@ function NFTVerification() {
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <h2>Details:</h2>
           </div>
-          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <p>Ticket Contract Address: {contract}</p>
-          </div>
           <table className='tableContainer'>
             <thead>
               <tr style={{ backgroundColor: '#f2f2f2' }}>
@@ -81,6 +81,7 @@ function NFTVerification() {
                 <th>Token ID</th>
                 <th>Token Type</th>
                 <th>Minted At</th>
+                <th>Expiration Date</th>
               </tr>
             </thead>
             <tbody>
@@ -90,6 +91,11 @@ function NFTVerification() {
                   <td>{checkData(result.id)}</td>
                   <td>{checkData(result.token_type)}</td>
                   <td>{checkData(result.minted_at)}</td>
+                    {Date.parse(currentDate) < Date.parse(expirationDate) ? (
+                      <td className='successMessage'>{`VALID -- ${new Date(expirationDate).toLocaleString()}`}</td>
+                    ) : (
+                      <td className='errorMessage'>{`EXPIRED -- ${new Date(expirationDate).toLocaleString()}`}</td>
+                    )}
                 </tr>
               ))}
             </tbody>
