@@ -8,7 +8,7 @@ function NFTVerification() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const contract = '0xce4f341622340d56e397740d325fd357e62b91cb'
+  const contract = '0xa4d3adea6920aab1a60b7f258c4c563788f262c1'
   const expirationDate = '2024-01-01T01:00:00.000Z'
   const currentDate = new Date()
 
@@ -45,7 +45,7 @@ function NFTVerification() {
     <div>
       <h1 className="title">NFT Ticket System</h1>
       <p className="message">
-        Select a blockchain and input a wallet address to check how many tickets that wallet owns.
+        Select a blockchain and input a wallet address to check how many tickets that wallet owns on that chain.
       </p>
       <div className="inputContainer">
         <select name="blockchain" value={blockchain} onChange={handleBlockchainChange}>
