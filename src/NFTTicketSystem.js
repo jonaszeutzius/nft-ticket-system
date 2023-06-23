@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-function NFTVerification() {
+function NFTTicketSystem() {
   const [walletAddress, setWalletAddress] = useState('');
   const [blockchain, setBlockchain] = useState('eth-main');
   const [data, setData] = useState(null);
@@ -106,4 +106,4 @@ function NFTVerification() {
   );
 }
 
-export default NFTVerification;
+export default NFTTicketSystem;
