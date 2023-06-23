@@ -96,7 +96,8 @@ Don't forget to replace `YOUR_BLOCKSPAN_API_KEY` with your actual key!
 We will then add two helper functions which help simplify our code:
 
 ```
-// Additional helper function
+// Additional helper functions
+
 const handleBlockchainChange = event => {
 setBlockchain(event.target.value);
 };
@@ -307,13 +308,13 @@ export default App;
 
 ```
 
-Now, you can start your application by running `npm start` in your terminal. You should see the following:
+Now, you can start your application by running `npm start` in your terminal. You should see the following in the browser:
 
 - A dropdown menu to select a blockchain
 - Text box for wallet address
 - A verify ticket button
 
-Input the data of the chain and wallet you want to check, and click the verify ticket button. You should then see a green "X tickets found" message and a table all tickets and their validity, or a red message if no tickets are found. 
+Input the data of the chain and wallet you want to check, and click the verify ticket button. You should then see a green "X tickets found" message and a table with all tickets and their validity, or a red message if no tickets are found. 
 
 This wraps up our guide to creating an NFT Ownership Verification tool using the Blockspan API and React.js. Happy coding!
 
