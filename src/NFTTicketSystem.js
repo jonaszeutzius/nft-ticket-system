@@ -8,8 +8,8 @@ function NFTTicketSystem() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const contract = '0xa4d3adea6920aab1a60b7f258c4c563788f262c1'
-  const expirationDate = '2024-01-01T01:00:00.000Z'
+  const contractAddress = '0xa4d3adea6920aab1a60b7f258c4c563788f262c1'
+  const expirationDate = '2023-01-01T01:00:00.000Z'
   const currentDate = new Date()
 
   const verifyTicket = async () => {
@@ -23,7 +23,7 @@ function NFTTicketSystem() {
       const response = await axios.get(url, { headers });
       console.log('API call 1:', response);
       const filteredResults = response.data.results.filter(
-        result => result.contract_address === contract
+        result => result.contract_address === contractAddress
       );
       console.log('filtered results', filteredResults) // array
       setData(filteredResults)
@@ -66,9 +66,17 @@ function NFTTicketSystem() {
       {data !== null && data.length > 0 && (
         <div>
             {data.length === 1 ? (
-              <p className="successMessage">1 ticket found in wallet!</p>
+              Date.parse(currentDate) < Date.parse(expirationDate) ? (
+                <p className="successMessage">1 ticket found in wallet!</p>
+              ) : (
+                <p className="errorMessage">1 expired ticket found in wallet!</p>
+              )
             ) : (
-              <p className="successMessage">{data.length} tickets found in wallet!</p>
+              Date.parse(currentDate) < Date.parse(expirationDate) ? (
+                <p className="successMessage">{data.length} tickets found in wallet!</p>
+              ) : (
+                <p className="errorMessage">{data.length} expired tickets found in wallet!</p>
+              )
             )}
           {console.log(data)}
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>

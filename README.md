@@ -42,7 +42,7 @@ function NFTTicketSystem() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const contract = 'INPUT_CONTRACT_ADDRESS_HERE'
+  const contractAddress = 'INPUT_CONTRACT_ADDRESS_HERE'
   const expirationDate = '2024-01-01T01:00:00.000Z' // Sample expiration date
   const currentDate = new Date()
 
@@ -78,7 +78,7 @@ const verifyTicket = async () => {
       const response = await axios.get(url, { headers });
       console.log('API call 1:', response);
       const filteredResults = response.data.results.filter(
-        result => result.contract_address === contract
+        result => result.contract_address === contractAddress
       );
       console.log('filtered results', filteredResults) // array
       setData(filteredResults)
@@ -109,68 +109,75 @@ Our JSX code will display a form for the user to select a chain and input their 
 
 ```
 // JSX code
-
-<div>
+  <div>
     <h1 className="title">NFT Ticket System</h1>
     <p className="message">
-    Select a blockchain and input a wallet address to check how many tickets that wallet owns on that chain.
+      Select a blockchain and input a wallet address to check how many tickets that wallet owns on that chain.
     </p>
     <div className="inputContainer">
-    <select name="blockchain" value={blockchain} onChange={handleBlockchainChange}>
+      <select name="blockchain" value={blockchain} onChange={handleBlockchainChange}>
         <option value="eth-main">eth-main</option>
         <option value="arbitrum-main">arbitrum-main</option>
         <option value="optimism-main">optimism-main</option>
         <option value="poly-main">poly-main</option>
         <option value="bsc-main">bsc-main</option>
         <option value="eth-goerli">eth-goerli</option>
-    </select>
-    <input type="text" placeholder="Wallet Address" onChange={e => setWalletAddress(e.target.value)} />
-    <button onClick={verifyTicket}>Verify Ticket</button>
+      </select>
+      <input type="text" placeholder="Wallet Address" onChange={e => setWalletAddress(e.target.value)} />
+      <button onClick={verifyTicket}>Verify Ticket</button>
     </div>
     {error && <p className="errorMessage">{error}</p>}
     {data !== null && data.length === 0 && (
-    <p className="errorMessage">No tickets found on this chain in this wallet!</p>
+      <p className="errorMessage">No tickets found on this chain in this wallet!</p>
     )}
     {data !== null && data.length > 0 && (
-    <div>
-        {data.length === 1 ? (
-            <p className="successMessage">1 ticket found in wallet!</p>
-        ) : (
-            <p className="successMessage">{data.length} tickets found in wallet!</p>
-        )}
+      <div>
+          {data.length === 1 ? (
+            Date.parse(currentDate) < Date.parse(expirationDate) ? (
+              <p className="successMessage">1 ticket found in wallet!</p>
+            ) : (
+              <p className="errorMessage">1 expired ticket found in wallet!</p>
+            )
+          ) : (
+            Date.parse(currentDate) < Date.parse(expirationDate) ? (
+              <p className="successMessage">{data.length} tickets found in wallet!</p>
+            ) : (
+              <p className="errorMessage">{data.length} expired tickets found in wallet!</p>
+            )
+          )}
         {console.log(data)}
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <h2>Details:</h2>
+          <h2>Details:</h2>
         </div>
         <table className='tableContainer'>
-        <thead>
+          <thead>
             <tr style={{ backgroundColor: '#f2f2f2' }}>
-            <th>Ticket Number</th>
-            <th>Token ID</th>
-            <th>Token Type</th>
-            <th>Minted At</th>
-            <th>Expiration Date</th>
+              <th>Ticket Number</th>
+              <th>Token ID</th>
+              <th>Token Type</th>
+              <th>Minted At</th>
+              <th>Expiration Date</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {data.map((result, index) => (
-            <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : 'white' }}>
+              <tr key={index} style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : 'white' }}>
                 <td>{index + 1}</td>
                 <td>{checkData(result.id)}</td>
                 <td>{checkData(result.token_type)}</td>
                 <td>{checkData(result.minted_at)}</td>
-                {Date.parse(currentDate) < Date.parse(expirationDate) ? (
+                  {Date.parse(currentDate) < Date.parse(expirationDate) ? (
                     <td className='successMessage'>{`VALID -- ${new Date(expirationDate).toLocaleString()}`}</td>
-                ) : (
+                  ) : (
                     <td className='errorMessage'>{`EXPIRED -- ${new Date(expirationDate).toLocaleString()}`}</td>
-                )}
-            </tr>
+                  )}
+              </tr>
             ))}
-        </tbody>
+          </tbody>
         </table>
-    </div>
+      </div>
     )}
-</div>
+  </div>
 ```
 
 Finally, we will enhance the user interface in the browser by replacing all code in the App.css file with the following:
