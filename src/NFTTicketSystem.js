@@ -8,24 +8,22 @@ function NFTTicketSystem() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const contractAddress = '0xa4d3adea6920aab1a60b7f258c4c563788f262c1'
+  const contractAddress = 'HARD_CODED_TICKET_CONTRACT_ADDRESS'
   const expirationDate = '2023-01-01T01:00:00.000Z'
   const currentDate = new Date()
 
   const verifyTicket = async () => {
-    const url = `http://localhost:8080/v1/nfts/owner/${walletAddress}?chain=${blockchain}&page_size=25`;
+    const url = `https://api.blockspan.com/v1/nfts/owner/${walletAddress}?chain=${blockchain}&page_size=25`;
     const headers = {
       accept: 'application/json',
-      'X-API-KEY': '2jhzbqIWanB8puiqySBIWJVf6Ovp7oPW',
+      'X-API-KEY': 'YOUR_BLOCKSPAN_API_KEY',
     };
 
     try {
       const response = await axios.get(url, { headers });
-      console.log('API call 1:', response);
       const filteredResults = response.data.results.filter(
         result => result.contract_address === contractAddress
       );
-      console.log('filtered results', filteredResults) // array
       setData(filteredResults)
       setError(null);
     } catch (error) {
@@ -78,7 +76,6 @@ function NFTTicketSystem() {
                 <p className="errorMessage">{data.length} expired tickets found in wallet!</p>
               )
             )}
-          {console.log(data)}
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <h2>Details:</h2>
           </div>

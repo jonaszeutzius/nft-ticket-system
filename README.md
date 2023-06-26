@@ -68,7 +68,7 @@ We will add a function `verifyTicket` to our component that makes a get request 
 // verifyTicket function
 
 const verifyTicket = async () => {
-    const url = `http://localhost:8080/v1/nfts/owner/${walletAddress}?chain=${blockchain}&page_size=25`;
+    const url = `https://api.blockspan.com/v1/nfts/owner/${walletAddress}?chain=${blockchain}&page_size=25`;
     const headers = {
       accept: 'application/json',
       'X-API-KEY': 'YOUR_BLOCKSPAN_API_KEY',
@@ -76,11 +76,9 @@ const verifyTicket = async () => {
 
     try {
       const response = await axios.get(url, { headers });
-      console.log('API call 1:', response);
       const filteredResults = response.data.results.filter(
         result => result.contract_address === contractAddress
       );
-      console.log('filtered results', filteredResults) // array
       setData(filteredResults)
       setError(null);
     } catch (error) {
@@ -145,7 +143,6 @@ Our JSX code will display a form for the user to select a chain and input their 
               <p className="errorMessage">{data.length} expired tickets found in wallet!</p>
             )
           )}
-        {console.log(data)}
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <h2>Details:</h2>
         </div>
